@@ -5,39 +5,39 @@ var databuffer = require('./databuffer');
 var gasConsole = new console.Console(new databuffer());
 
 function log() {
-    return gasConsole.log.apply(this, arguments);
+    return gasConsole.log.apply(gasConsole, arguments);
 }
 
 function info() {
-    return gasConsole.info.apply(this, arguments);
+    return gasConsole.info.apply(gasConsole, arguments);
 }
 
 function warn() {
-    return gasConsole.warn.apply(this, arguments);
+    return gasConsole.warn.apply(gasConsole, arguments);
 }
 
 function error() {
-    return gasConsole.error.apply(this, arguments);
+    return gasConsole.error.apply(gasConsole, arguments);
 }
 
 function dir() {
-    return gasConsole.dir.apply(this, arguments);
+    return gasConsole.dir.apply(gasConsole, arguments);
 }
 
 function time() {
-    return gasConsole.time.apply(this, arguments);
+    return gasConsole.time.apply(gasConsole, arguments);
 }
 
 function timeEnd() {
-    return gasConsole.timeEnd.apply(this, arguments);
+    return gasConsole.timeEnd.apply(gasConsole, arguments);
 }
 
 function trace() {
-    return gasConsole.trace.apply(this, arguments);
+    return gasConsole.trace.apply(gasConsole, arguments);
 }
 
 function assert() {
-    return gasConsole.assert.apply(this, arguments);
+    return gasConsole.assert.apply(gasConsole, arguments);
 }
 
 function Console(name) {
