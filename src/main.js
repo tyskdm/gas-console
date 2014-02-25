@@ -45,6 +45,9 @@ function Console(name) {
     return new console.Console(databuff.getStdout(name));
 }
 
+function fputs(str) {
+    return gasConsole._stdout.write(str);
+}
 
 
 var gui = require('./gui');
