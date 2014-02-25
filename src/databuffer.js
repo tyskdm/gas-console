@@ -17,7 +17,7 @@ module.exports = function (name, ignoreColor) {
 
 
 module.exports.prototype.write = function (message) {
-  var str;
+  var str, clearCode = this.clearCode;
 
   message = message.replace(/\n/g, "<br/>");
 
@@ -43,6 +43,7 @@ module.exports.prototype.write = function (message) {
       default:
         break;
     }
+    this.clearCode = clearCode;
     str = message.match(/\033\[32m|\033\[31m|\033\[33m|\033\[0m/);
   }
 

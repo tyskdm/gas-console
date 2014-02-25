@@ -1,8 +1,16 @@
 
+/*
+ *  MEMO: node_core/console.js line 48, comment out.
+ *
+ */
+
 require('global');
 
 var databuffer = require('./databuffer');
-var gasConsole = new console.Console(new databuffer());
+var buff = new databuffer();
+
+var gasConsole = new console.Console(buff);
+gasConsole.buff = buff;
 
 function log() {
     return gasConsole.log.apply(gasConsole, arguments);
@@ -45,8 +53,9 @@ function Console(name) {
     return new console.Console(databuff.getStdout(name));
 }
 
-function fputs(str) {
-    return gasConsole._stdout.write(str);
+function fputs() {
+//    return gasConsole.buff.write.apply(buff, arguments);
+    return gasConsole._stdout.write.apply(gasConsole._stdout, arguments);
 }
 
 
