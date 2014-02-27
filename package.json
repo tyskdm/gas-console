@@ -1,0 +1,25 @@
+{
+  "name": "gas-console",
+  "version": "0.0.0",
+  "description": "console API object for GoogleAppsScript porting from Node.js.",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:tyskdm/console.git"
+  },
+  "keywords": [
+    "gas",
+    "GooglsAppsScript"
+  ],
+  "author": {
+    "name": "Tsuyoshi Kodama",
+    "email": "tsuyoshi.kodama@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "codegs-core": "0.0.0"
+  }
+}
