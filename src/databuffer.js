@@ -48,7 +48,7 @@ module.exports.prototype.write = function (message) {
   }
 
   str = this.cache.get(this.name) + message;
-  this.cache.put(this.name, str, 60*60);
+  this.cache.put(this.name, str, 15*60);
 };
 
 module.exports.prototype.read = function () {
