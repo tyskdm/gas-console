@@ -1,0 +1,30 @@
+#! /usr/bin/env node
+
+var path = require('path');
+
+var config = {
+    rootdir:    __dirname,
+    mainfile:   path.join(__dirname, './src/main.js'),
+    source:     [path.join(__dirname, './src')],
+    output:     path.join(__dirname, './out.js'),
+    core:       path.join(__dirname, './node_modules/codegs-core/code/gas'),
+    node_core:  path.join(__dirname, './node_modules/codegs-core/node/v0.10.26'),
+    kernel:     null
+};
+
+var code = require('codegs').create(config);
+var error;
+
+error = code.run();
+
+if (error !== null) {
+    if (error.substr(0, 6) === 'Error:') {
+        console.error(error);
+        console.log('');
+        process.exit(1);
+    } else {
+        console.log(error);
+    }
+}
+
+process.exit(0);
