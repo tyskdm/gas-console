@@ -47,8 +47,10 @@ module.exports.prototype.write = function (message) {
     str = message.match(/\033\[32m|\033\[31m|\033\[33m|\033\[0m/);
   }
 
-  str = this.cache.get(this.name) + message;
-  this.cache.put(this.name, str, 15*60);
+  str = this.cache.get(this.name);
+  str = str === null ? '' : str;
+  str += message;
+  this.cache.put(this.name, str, 15*60); // 15min.
 };
 
 module.exports.prototype.read = function () {
