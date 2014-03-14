@@ -21,7 +21,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "codegs-core": "~0.0.1",
-    "codegs": "~0.0.8"
+    "codegs-core": "~0.0.2",
+    "codegs": "~0.0.10"
   }
 }
