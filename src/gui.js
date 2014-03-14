@@ -1,15 +1,32 @@
 
-module.exports.doGet = function (e) {
+module.exports = function (e) {
+  if (typeof e !== 'object') return null;
+
+  if (typeof e.queryString !== 'undefined') {
+    return doGet(e);
+  }
+  if (typeof e.parameter !== 'undefined') {
+    if (e.parameter.eventType) {
+      return selectTab(e);
+    } else {
+      return doTimer(e);
+    }
+  }
+  return null;
+};
+
+
+function doGet(e) {
   var app = UiApp.createApplication().setTitle("GAS-Console");
   {
     var panel = app.createVerticalPanel().setSize("100%","100%");
     {
-      var label = app.createHTML('<span style="font-size: 160%">GAS Console</span>')
+      var label = app.createHTML('<span style="font-size: 160%">GAS Console v0.0.1</span>')
       .setStyleAttributes({'padding-left': "10", 'padding-top': "8"});
       panel.add(label).setCellHeight(label, "40");
 
       var tabBar = app.createDecoratedTabBar().setSize("100%", "24");
-      tabBar.addTab("jasmine").addTab("Logger")
+      tabBar.addTab("console").addTab("Logger")
       .selectTab(0);
       panel.add(tabBar).setCellHeight(tabBar, "24");
 
@@ -24,6 +41,7 @@ module.exports.doGet = function (e) {
           var jasmineLog = app.createHTML("--- jasmineLog ---").setId("jasmineLog")
           .setStyleAttributes({'padding-left': "8", 'padding-right': "8", 'padding-top': "4"})
           .setSize("100%-16","100%-4").setWordWrap(true);
+
           jasmineScrollPanel.add(jasmineLog);
         }
         deckPanel.add(jasmineScrollPanel, 0, 0);
@@ -34,48 +52,32 @@ module.exports.doGet = function (e) {
           var loggerLog = app.createHTML("--- Logger.getLog() ---").setId("loggerLog")
           .setStyleAttributes({'padding-left': "8", 'padding-right': "8", 'padding-top': "4"})
           .setSize("100%-16","100%-4").setWordWrap(true);
+
           loggerScrollPanel.add(loggerLog);
         }
         deckPanel.add(loggerScrollPanel, 0, 0);
-
-
       }
       panel.add(deckPanel);
 
-      //var horizontalPanel = app.createHorizontalPanel().setSize("100%", "100%")
-      //.setStyleAttributes({'background': "#e0e0e0"});
-      //{
-      //  horizontalPanel.add(app.createLabel("jasmine.version_ : " + jasmine.version_.major + '.' + jasmine.version_.minor + '.' + jasmine.version_.build)
-      //  .setStyleAttributes({'text-align': "center", 'padding-left': "8", 'padding-top': "10"}));
-      //
-      //  var handler = app.createServerHandler("rajah.executeByButton")
-      //  .addCallbackElement(jasmineLog)
-      //  .addCallbackElement(loggerLog)
-      //  .addCallbackElement(timeStamp);
-      //
-      //  var b = app.createButton("Execute jasmine", handler).setSize("94%", "30");
-      //  horizontalPanel.add(b);
-      //}
-      //panel.add(horizontalPanel).setCellHeight(horizontalPanel, 38)
-
       tabBar.addSelectionHandler(
-        app.createServerHandler("_selectTab")
+        app.createServerHandler("doGet")
         .addCallbackElement(jasmineScrollPanel)
         .addCallbackElement(loggerScrollPanel)
       );
-
     }
     app.add(panel);
   }
 
-  return module.exports._doTimer();
-};
+  doTimer();
+
+  return app;
+}
 
 
 /**
  * Timer-handler, select TabPanel.
  */
-module.exports._doTimer = function (eventInfo) {
+function doTimer(eventInfo) {
   var app = UiApp.getActiveApplication(),
       jasmineLog = app.getElementById("jasmineLog"),
       loggerLog = app.getElementById("loggerLog"),
@@ -84,23 +86,28 @@ module.exports._doTimer = function (eventInfo) {
 
   var buff = new (require('./databuffer'))();
 
-  jasmineLog.setHTML(buff.read());
+  var content = buff.read();
+  content = (content === null) ? '' : content;
+  jasmineLog.setHTML('<tt>' + content + '</tt>');
+
   log = Logger.getLog().replace(/\n/g, "<br />") || "<< Logger.getLog() empty. >>";
   Logger.clear();
   loggerLog.setHTML(log);
+
   timeStamp.setHTML(Utilities.formatDate(new Date(), "JST", "yyyy.MM.dd HH:mm:ss"));
 
-  app.addTimer(app.createServerHandler("_doTimer") , 200);
+  app.addTimer(app.createServerHandler("doGet") , 200);
 
   return app;
-};
+}
 
 
-var databuffer = require('./databuffer');
 /**
  * UI-handler, select TabPanel.
  */
-module.exports._selectTab = function (eventInfo) {
+function selectTab(eventInfo) {
+  var databuffer = require('./databuffer');
+
   var app = UiApp.getActiveApplication(),
       jasmineScrollPanel = app.getElementById("jasmineScrollPanel"),
       loggerScrollPanel = app.getElementById("loggerScrollPanel");
@@ -120,41 +127,3 @@ module.exports._selectTab = function (eventInfo) {
 
   return app;
 };
-
-
-
-
-/*
-
-function doGet(e) {
-
-  var app = UiApp.createApplication();
-
-
-
-  app.add(app.createLabel(new Date()).setId("label"));
-
-
-
-  app.addTimer(app.createServerHandler("update") , 1000);
-
-
-
-  return app;
-
-}
-
-function update(e){
-
-  var app = UiApp.getActiveApplication();
-
-  app.getElementById("label").setText(new Date());
-
-  app.addTimer(app.createServerHandler("update") , 1000);
-
-  return app;
-
-}
-
-
-*/
