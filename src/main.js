@@ -1,74 +1,76 @@
 
-/*
- *  MEMO: node_core/console.js line 48, comment out.
+var gasConsole_;
+
+if (typeof this.global === 'undefined') {
+    //  Google Apps Script
+    require('global');
+
+    var databuff_ = require('./databuffer');
+    var buff_ = new databuff_();
+
+    gasConsole_ = new console.Console(buff_);
+    gasConsole_.buff = buff_;
+
+} else {
+    // Node.js
+    gasConsole_ = console;
+    console.fputs = fputs;
+}
+
+/**
+ *  console.log([data], [...])
+ *  Prints to stdout with newline.
+ *  This function can take multiple arguments in a printf()-like way.
  *
+ *  @example
+ *  console.log('count: %d', count);
  */
-
-require('global');
-
-var databuffer = require('./databuffer');
-var buff = new databuffer();
-
-var gasConsole = new console.Console(buff);
-gasConsole.buff = buff;
-
 function log() {
-    return gasConsole.log.apply(gasConsole, arguments);
+    return gasConsole_.log.apply(gasConsole_, arguments);
 }
 
 function info() {
-    return gasConsole.info.apply(gasConsole, arguments);
+    return gasConsole_.info.apply(gasConsole_, arguments);
 }
 
 function warn() {
-    return gasConsole.warn.apply(gasConsole, arguments);
+    return gasConsole_.warn.apply(gasConsole_, arguments);
 }
 
 function error() {
-    return gasConsole.error.apply(gasConsole, arguments);
+    return gasConsole_.error.apply(gasConsole_, arguments);
 }
 
 function dir() {
-    return gasConsole.dir.apply(gasConsole, arguments);
+    return gasConsole_.dir.apply(gasConsole_, arguments);
 }
 
 function time() {
-    return gasConsole.time.apply(gasConsole, arguments);
+    return gasConsole_.time.apply(gasConsole_, arguments);
 }
 
 function timeEnd() {
-    return gasConsole.timeEnd.apply(gasConsole, arguments);
+    return gasConsole_.timeEnd.apply(gasConsole_, arguments);
 }
 
 function trace() {
-    return gasConsole.trace.apply(gasConsole, arguments);
+    return gasConsole_.trace.apply(gasConsole_, arguments);
 }
 
 function assert() {
-    return gasConsole.assert.apply(gasConsole, arguments);
+    return gasConsole_.assert.apply(gasConsole_, arguments);
 }
 
 function Console(name) {
-    // use original console.Console. NOT gasConsole.Console.
-    return new console.Console(databuff.getStdout(name));
+    // use original console.Console. NOT gasConsole_.Console.
+    return new console.Console(databuff_.getStdout(name));
 }
 
 function fputs() {
-//    return gasConsole.buff.write.apply(buff, arguments);
-    return gasConsole._stdout.write.apply(gasConsole._stdout, arguments);
+    return gasConsole_._stdout.write.apply(gasConsole_._stdout, arguments);
 }
 
-
-var gui = require('./gui');
 
 function doGet(e) {
-    return gui.doGet(e);
-}
-
-function _doTimer(e) {
-    return gui._doTimer(e);
-}
-
-function _selectTab(e) {
-    return gui._selectTab(e);
+    return require('./gui')(e);
 }
