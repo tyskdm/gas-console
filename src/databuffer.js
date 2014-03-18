@@ -25,19 +25,19 @@ module.exports.prototype.write = function (message) {
   while (str !== null) {
     switch (str[0]) {
       case ('\033[32m'): // green
-        message = igColor ? message.replace(/\033\[32m/, '') : message.replace(/\033\[32m/, clearCode + '<span style="color: #00aa00">');
+        message = this.igColor ? message.replace(/\033\[32m/, '') : message.replace(/\033\[32m/, clearCode + '<span style="color: #00aa00">');
         clearCode = '</span>';
         break;
       case ('\033[31m'): // red
-        message = igColor ? message.replace(/\033\[31m/, '') : message.replace(/\033\[31m/, clearCode + '<span style="color: #ff0000">');
+        message = this.igColor ? message.replace(/\033\[31m/, '') : message.replace(/\033\[31m/, clearCode + '<span style="color: #ff0000">');
         clearCode = '</span>';
         break;
       case ('\033[33m'): // yellow
-        message = igColor ? message.replace(/\033\[33m/, '') : message.replace(/\033\[33m/, clearCode + '<span style="color: #dddd00">');
+        message = this.igColor ? message.replace(/\033\[33m/, '') : message.replace(/\033\[33m/, clearCode + '<span style="color: #dddd00">');
         clearCode = '</span>';
         break;
       case ('\033[0m'):  // none
-        message = igColor ? message.replace(/\033\[0m/, '') : message.replace(/\033\[0m/, clearCode);
+        message = this.igColor ? message.replace(/\033\[0m/, '') : message.replace(/\033\[0m/, clearCode);
         clearCode = "";
         break;
       default:

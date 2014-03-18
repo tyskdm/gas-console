@@ -1,6 +1,6 @@
 {
   "name": "gas-console",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "console object for GoogleAppsScript porting from Node.js v0.10.26.",
   "main": "src/main.js",
   "files": [ "./src" ],
